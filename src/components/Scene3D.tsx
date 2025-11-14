@@ -3,11 +3,17 @@
 import * as THREE from "three";
 import { useEffect, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { OrbitControls, Environment, Html } from "@react-three/drei";
+import {
+  OrbitControls,
+  Environment,
+  Html,
+  useProgress,
+} from "@react-three/drei";
 import City from "../app/City";
 import HeroOverlay from "./HeroOverlay";
 import HotspotSlider, { HotspotId } from "./HotspotSlider";
 import HotspotButton from "./HotspotButton";
+import SplashScreen from "./SplashScreen";
 
 function CameraRig() {
   const { camera, gl } = useThree();
@@ -61,8 +67,21 @@ function CameraRig() {
 
 export default function Scene3D() {
   const [activeHotspot, setActiveHotspot] = useState<HotspotId | null>(null);
+  const { progress } = useProgress();
+  const [showSplash, setShowSplash] = useState(true);
+
+  useEffect(() => {
+    if (progress === 100) {
+      const timeout = setTimeout(() => {
+        setShowSplash(false);
+      }, 1200);
+      return () => clearTimeout(timeout);
+    }
+  }, [progress]);
+
   return (
     <div className="relative w-full h-full">
+      <SplashScreen show={showSplash} />
       <Canvas
         shadows
         camera={{ position: [40, 35, 45], fov: 40 }}
@@ -105,7 +124,7 @@ export default function Scene3D() {
         {/* city model */}
         <City />
 
-        {!activeHotspot && (
+        {!activeHotspot && !showSplash && (
           <>
             <Html position={[0, 5, 0]} distanceFactor={14} sprite center>
               <HotspotButton
