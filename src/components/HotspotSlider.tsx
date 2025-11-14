@@ -5,6 +5,7 @@ import ExperiencePanel from "./ExperiencePanel";
 import ContactPanel from "./ContactPanel";
 import EducationPanel from "./EducationPanel";
 import SkillsPanel from "./SkillsPanel";
+import ProjectsPanel from "./ProjectsPanel";
 
 type HotspotId =
   | "experience"
@@ -76,6 +77,8 @@ export default function HotspotSlider({
         return <EducationPanel />;
       case "skills":
         return <SkillsPanel />;
+      case "projects":
+        return <ProjectsPanel />;
 
       default:
         return (
