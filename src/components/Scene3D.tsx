@@ -74,7 +74,7 @@ export default function Scene3D() {
     if (progress === 100) {
       const timeout = setTimeout(() => {
         setShowSplash(false);
-      }, 1200);
+      }, 500);
       return () => clearTimeout(timeout);
     }
   }, [progress]);
