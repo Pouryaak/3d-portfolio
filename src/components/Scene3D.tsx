@@ -14,6 +14,7 @@ import HeroOverlay from "./HeroOverlay";
 import HotspotSlider, { HotspotId } from "./HotspotSlider";
 import HotspotButton from "./HotspotButton";
 import SplashScreen from "./SplashScreen";
+import DragHint from "./DragHint";
 
 function CameraRig() {
   const { camera, gl } = useThree();
@@ -69,6 +70,7 @@ export default function Scene3D() {
   const [activeHotspot, setActiveHotspot] = useState<HotspotId | null>(null);
   const { progress } = useProgress();
   const [showSplash, setShowSplash] = useState(true);
+  const [hasInteracted, setHasInteracted] = useState(false);
 
   useEffect(() => {
     if (progress === 100) {
@@ -82,6 +84,7 @@ export default function Scene3D() {
   return (
     <div className="relative w-full h-full">
       <SplashScreen show={showSplash} />
+      <DragHint show={!showSplash && !hasInteracted} />
       <Canvas
         shadows
         camera={{ position: [40, 35, 45], fov: 40 }}
@@ -91,6 +94,9 @@ export default function Scene3D() {
           state.gl.toneMapping = THREE.ACESFilmicToneMapping;
           state.gl.toneMappingExposure = 1.0;
         }}
+        onPointerDown={() => setHasInteracted(true)}
+        onWheel={() => setHasInteracted(true)}
+        onTouchStart={() => setHasInteracted(true)}
       >
         {/* slightly warm background */}
         <color attach="background" args={["#e3dfd8"]} />
